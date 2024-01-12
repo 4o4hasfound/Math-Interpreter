@@ -21,9 +21,6 @@ Parser::Parser(const std::vector<Token>& tokens) {
 			// Number or Function
 			case TokenType::NUMBER:
 			case TokenType::FUNCTION:
-				if (token.function == ",") {
-
-				}
 				m_output.push_back(token);
 				break;
 			
@@ -37,9 +34,13 @@ Parser::Parser(const std::vector<Token>& tokens) {
 							m_output.push_back(o2);
 							m_operator.pop_back();
 						}
+						else {
+							break;
+						}
 					}
 					break;
 				}
+
 
 				// Left paranthesis
 				if (token.operatorType == OperatorType::LPARAN) {
@@ -50,7 +51,10 @@ Parser::Parser(const std::vector<Token>& tokens) {
 				// Right paranthesis
 				if (token.operatorType == OperatorType::RPARAN) {
 					while (!m_operator.empty()) {
-						const Token& o2 = m_operator.back();
+						const Token o2 = m_operator.back();
+						if (o2.operatorType == OperatorType::LPARAN) {
+							break;
+						}
 						m_output.push_back(o2);
 						m_operator.pop_back();
 					}
@@ -62,8 +66,10 @@ Parser::Parser(const std::vector<Token>& tokens) {
 					}
 					break;
 				}
+
+				// Other Operators
 				while (!m_operator.empty()) {
-					const Token& o2 = m_operator.back(); 
+					const Token& o2 = m_operator.back();
 					if (o2.type == TokenType::OPERATOR && o2.operatorType != OperatorType::LPARAN) {
 						uint32_t precedenceO2 = s_precedenceMap[o2.operatorType];
 						uint32_t precedenceToken = s_precedenceMap[token.operatorType];
@@ -77,12 +83,17 @@ Parser::Parser(const std::vector<Token>& tokens) {
 							m_output.push_back(o2);
 							m_operator.pop_back();
 						}
+						else {
+							break;
+						}
+					}
+					else {
+						break;
 					}
 				}
 				m_operator.push_back(token);
 		}
 	}
-	int i = 0;
 
 	while (!m_operator.empty()) {
 		const Token& o2 = m_operator.back();
@@ -90,4 +101,80 @@ Parser::Parser(const std::vector<Token>& tokens) {
 		m_operator.pop_back();
 	}
 
+
+	std::vector<bool> removed(m_output.size(), 0);
+	std::stack<double> st;
+	for (size_t i = 0; i < m_output.size(); ) {
+		const Token& token = m_output[i];
+
+		if (token.type == TokenType::NUMBER) {
+			st.push(token.number);
+		}
+		else if (token.type == TokenType::OPERATOR) {
+			switch (token.operatorType) {
+			case OperatorType::ADDITION:
+			{
+				removed[i] = removed[i - 1] = 1;
+				double d1 = st.top(); st.pop();
+				double d2 = st.top(); st.pop();
+				st.push(d1 + d2);
+				break;
+			}
+			case OperatorType::SUBTRACTION:
+			{
+				removed[i] = removed[i - 1] = 1;
+				double d1 = st.top(); st.pop();
+				double d2 = st.top(); st.pop();
+				st.push(d2 - d1);
+				break;
+			}
+			case OperatorType::MULTIPLICATION:
+			{
+				removed[i] = removed[i - 1] = 1;
+				double d1 = st.top(); st.pop();
+				double d2 = st.top(); st.pop();
+				st.push(d1 * d2);
+				break;
+			}
+			case OperatorType::DIVISION:
+			{
+				removed[i] = removed[i - 1] = 1;
+				double d1 = st.top(); st.pop();
+				double d2 = st.top(); st.pop();
+				st.push(d2 / d1);
+				break;
+			}
+			case OperatorType::MODULUS:
+			{
+				removed[i] = removed[i - 1] = 1;
+				double d1 = st.top(); st.pop();
+				double d2 = st.top(); st.pop();
+				st.push(static_cast<int>(d2) % static_cast<int>(d1));
+				break;
+			}
+			case OperatorType::EXPONENTIATION:
+			{
+				removed[i] = removed[i - 1] = 1;
+				double d1 = st.top(); st.pop();
+				double d2 = st.top(); st.pop();
+				st.push(std::pow(d2, d1));
+				break;
+			}
+			case OperatorType::SQUAREROOT:
+			{
+				removed[i] = 1;
+				double d1 = st.top(); st.pop();
+				st.push(std::sqrt(d1));
+				break;
+			}
+			}
+		}
+
+		while (++i < removed.size() && removed[i]);
+	}
+	m_result = st.top();
+}
+
+const double& Parser::getResult() const {
+	return m_result;
 }

@@ -4,13 +4,12 @@
 #include "Map.hpp"
 #include <iostream>
 #include <string>
+#include <stack>
 
 int main() {
-	Lexer lexer("1 + 12345.678*(2%50)^2+ std::max(1, 2, 34+5)");
+	Lexer lexer("3 + 4* 2 / ( 1 - 5 ) ^ 2");
 	auto &result = lexer.getToken();
-	for (auto i : result) {
-		std::cout << i << "\n";
-	}
 	Parser parser(result);
+	std::cout << parser.getResult();
 	return 0;
 }

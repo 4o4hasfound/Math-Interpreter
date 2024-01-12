@@ -1,4 +1,5 @@
 ﻿  Parser.cpp
   The contents of <variant> are available only with C++17 or later.
+D:\Program\C++\Math Interpreter\src\Parser.cpp(167,24): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
 D:\Program\C++\Math Interpreter\include\Map.hpp(37): warning C4715: 'Utils::Map<enum OperatorType,unsigned int,10>::operator[]': not all control paths return a value
   Math Interpreter.vcxproj -> D:\Program\C++\Math Interpreter\x64\Debug\Math Interpreter.exe

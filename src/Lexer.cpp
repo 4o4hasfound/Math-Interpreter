@@ -45,7 +45,7 @@ void Lexer::GenerateTokens() {
 		}
 
 		// Digit or String
-		if (std::isalpha(c) || std::isdigit(c)) {
+		if (c >= 0 && std::isalpha(c) || std::isdigit(c)) {
 			if (!m_inString) {
 				m_inString = true;
 				m_lastPtr = m_ptr;
