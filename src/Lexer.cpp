@@ -41,6 +41,15 @@ void Lexer::GenerateTokens() {
 		// Operators
 		if (s_tokenMap.count(c)) {
 			checkCurrentString();
+			
+			// If something like 2(1+1) occurs, we add the missing multiplication symbol
+			if (c == '(' && m_tokens.size()) {
+				const Token& t = m_tokens.back();
+				if (t.type == TokenType::NUMBER) {
+					m_tokens.push_back(Token(TokenType::OPERATOR, OperatorType::MULTIPLICATION));
+				}
+			}
+
 			m_tokens.push_back(s_tokenMap[c]);
 		}
 

@@ -1,15 +1,7 @@
-﻿  Lexer.cpp
-  The contents of <variant> are available only with C++17 or later.
-  Parser.cpp
-  The contents of <variant> are available only with C++17 or later.
-  Token.cpp
-  The contents of <variant> are available only with C++17 or later.
-  main.cpp
-  The contents of <variant> are available only with C++17 or later.
+﻿  main.cpp
   Generating code
-  Previous IPDB and IOBJ mismatch, fall back to full compilation.
-D:\Program\C++\Math Interpreter\include\Map.hpp(37): warning C4715: 'Utils::Map<enum OperatorType,unsigned int,10>::operator[]': not all control paths return a value
-D:\Program\C++\Math Interpreter\include\Map.hpp(37): warning C4715: 'Utils::Map<int,Token,10>::operator[]': not all control paths return a value
-  All 401 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  205 of 1258 functions (16.3%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    209 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Math Interpreter.vcxproj -> D:\Program\C++\Math Interpreter\x64\Release\Math Interpreter.exe
