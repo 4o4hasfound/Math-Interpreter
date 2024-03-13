@@ -19,17 +19,21 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Conversions.cpp" />
     <ClCompile Include="src\Lexer.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Parser.cpp" />
     <ClCompile Include="src\Token.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Conversion.hpp" />
+    <ClInclude Include="include\Errors.hpp" />
     <ClInclude Include="include\Functions.hpp" />
     <ClInclude Include="include\Map.hpp" />
     <ClInclude Include="include\Lexer.hpp" />
     <ClInclude Include="include\Parser.hpp" />
     <ClInclude Include="include\Token.hpp" />
+    <ClInclude Include="include\varient_comparison.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

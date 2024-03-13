@@ -7,6 +7,7 @@
 
 #include "Token.hpp"
 #include "Map.hpp"
+#include "Conversion.hpp"
 
 class Lexer {
 public:
@@ -24,7 +25,6 @@ private:
 
 	std::vector<Token> m_tokens;
 	
-	static const Utils::Map<int, Token, 10> s_tokenMap;
 	static const std::array<char, 3> s_whiteSpaces;
 
 	void GenerateTokens();

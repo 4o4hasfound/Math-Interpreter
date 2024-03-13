@@ -1,18 +1,5 @@
 #include "Lexer.hpp"
 
-const Utils::Map<int, Token, 10> Lexer::s_tokenMap{ {
-	{'+', Token(TokenType::OPERATOR, OperatorType::ADDITION)},
-	{'-', Token(TokenType::OPERATOR, OperatorType::SUBTRACTION)},
-	{'*', Token(TokenType::OPERATOR, OperatorType::MULTIPLICATION)},
-	{'/', Token(TokenType::OPERATOR, OperatorType::DIVISION)},
-	{'%', Token(TokenType::OPERATOR, OperatorType::MODULUS)},
-	{'^', Token(TokenType::OPERATOR, OperatorType::EXPONENTIATION)},
-	{'กิ', Token(TokenType::OPERATOR, OperatorType::SQUAREROOT)},
-	{'(', Token(TokenType::OPERATOR, OperatorType::LPARAN)},
-	{')', Token(TokenType::OPERATOR, OperatorType::RPARAN)},
-	{',', Token(TokenType::OPERATOR, OperatorType::COMMA)}
-} };
-
 const std::array<char, 3> Lexer::s_whiteSpaces{ { ' ', '\t', '\n' } };
 
 Lexer::Lexer(const std::string& text) 
@@ -37,20 +24,12 @@ void Lexer::GenerateTokens() {
 			checkCurrentString();
 			continue;
 		}
-
+		
 		// Operators
-		if (s_tokenMap.count(c)) {
+		if (Conversions::CharOperator.count(c)) {
 			checkCurrentString();
-			
-			// If something like 2(1+1) occurs, we add the missing multiplication symbol
-			if (c == '(' && m_tokens.size()) {
-				const Token& t = m_tokens.back();
-				if (t.type == TokenType::NUMBER) {
-					m_tokens.push_back(Token(TokenType::OPERATOR, OperatorType::MULTIPLICATION));
-				}
-			}
 
-			m_tokens.push_back(s_tokenMap[c]);
+			m_tokens.push_back(Conversions::CharOperator[c]);
 		}
 
 		// Digit or String
@@ -88,10 +67,10 @@ void Lexer::checkCurrentString() {
 	}
 	const std::string str = m_text.substr(m_lastPtr, m_ptr - m_lastPtr);
 	if (isNumber(str)) {
-		m_tokens.push_back(Token(TokenType::NUMBER, std::stod(str)));
+		m_tokens.push_back(Token(std::stod(str)));
 	}
 	else {
-		m_tokens.push_back(Token(TokenType::FUNCTION, str));
+		m_tokens.push_back(Token(str));
 	}
 	m_inString = false;
 	m_lastPtr = m_ptr;

@@ -6,7 +6,8 @@
 enum class TokenType {
 	NUMBER,
 	OPERATOR,
-	FUNCTION,
+	IDENTIFIER,
+	ANY,
 	NONTYPE
 };
 
@@ -23,24 +24,46 @@ enum class OperatorType {
 	COMMA
 };
 
+enum class IdentifierType {
+	VARIABLE,
+	FUNCTION,
+	UNKNOWN
+};
+
+#include "Conversion.hpp"
+
 class Token {
 public:
 	Token();
-	Token(TokenType type, const double& num);
-	Token(TokenType type, const std::string& function);
-	Token(TokenType type, OperatorType operatorType);
+	Token(const double& num);
+	Token(const std::string& function);
+	Token(OperatorType operatorType);
 	Token(const Token& token);
 	Token& operator=(const Token& token);
 
 	~Token();
 
 	bool operator==(const Token& token) const;
+
+	std::string str() const;
 public:
-	TokenType type;
+	TokenType type = TokenType::NONTYPE;
 
 	union {
 		double number;
-		std::string function;
+
+		struct IdentifierData {
+			std::string name;
+			IdentifierType type = IdentifierType::UNKNOWN;
+
+			// Store the argument count for functions
+			uint32_t argumentCount = 0;
+
+			bool operator==(const IdentifierData& other) const {
+				return other.type == type && other.name == name;
+			}
+		} identifier;
+
 		OperatorType operatorType;
 	};
 };
