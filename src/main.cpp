@@ -9,11 +9,17 @@
 #include <sstream>
 #include <string>
 #include <stack>
-
+	
 Parser parser;
 
+// Parse a command that starts with /
 void parseCommand(const std::string& command);
+
+// Keep receiving input until a blank line occurs.
+// If a command is received, call parseCommand
 void repl();
+
+// Parse a single line if the program is called with a command line argument
 int parseArithmetic(int argc, char* argv[]);
 
 int main(int argc, char* argv[]) {
@@ -67,7 +73,12 @@ void parseCommand(const std::string& command) {
 		parser.variable[result[1]] = value;
 	}
 	else if (operation == "clear") {
-		parser = Parser();
+		if (result.size() > 1 && parser.variable.count(result[1])) {
+			parser.variable.erase(result[1]);
+		}
+		else {
+			parser = Parser();
+		}
 	}
 	else if (operation == "variables") {
 		std::cout << "\n";
@@ -104,7 +115,7 @@ void repl() {
 			Lexer lexer(str);
 			parser.Evaluate(lexer.getToken());
 			double out = parser.Calculate();
-			if (std::fmod(out, 1.0) < std::numeric_limits<double>::epsilon()) {
+			if (std::fmod(std::abs(out), 1.0) < std::numeric_limits<double>::epsilon()) {
 				std::cout << static_cast<long long>(out) << "\n>  ";
 			}
 			else {
@@ -126,13 +137,6 @@ int parseArithmetic(int argc, char* argv[]) {
 	try {
 		Lexer lexer(expression);
 		Parser parser;
-		parser.functionMap["haha"] = FunctionObj{
-			1,
-			{TokenType::NUMBER},
-			[](const std::vector<Token>& input) {
-				return input[0].number * 1000.0f;
-}
-		};
 		parser.Evaluate(lexer.getToken());
 		std::cout << parser.Calculate();
 		return 0;

@@ -62,6 +62,13 @@ namespace Functions {
 				return std::sqrt(input[0].number);
 			}
 		};
+		const FunctionObj Negative{
+			1,
+			{TokenType::NUMBER},
+			[](const std::vector<Token>& input) {
+				return -input[0].number;
+			}
+		};
 	};
 
 	const FunctionObj max{

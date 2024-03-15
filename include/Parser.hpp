@@ -34,7 +34,10 @@ class Parser {
 public:
 	Parser(const Configuration& config = Configuration());
 
+	// Resolve the identifier tokens and turn the tokens into Reversed Polish notation using shunting yard algorithm
 	void Evaluate(std::vector<Token> tokens);
+
+	// Calculate the result using the evaluated result
 	double Calculate() const;
 
 	std::unordered_map<std::variant<std::string, OperatorType>, FunctionObj> functionMap;
@@ -42,13 +45,17 @@ public:
 private:
 	std::vector<Token> m_output;
 
-	static const Utils::Map<OperatorType, uint32_t, 10> s_precedenceMap;
+	static const Utils::Map<OperatorType, uint32_t, 11> s_precedenceMap;
 
 	// Checks 
 	//	1. Whether a identifier is a function or a variable
 	//	2. How many arguments is a function given
 	void resolveIdentifier(std::vector<Token>& tokens);
+
+	// Insert a multiplication operator whenever an explicit multiplication occurs
 	void explicitMultiplication(std::vector<Token>& tokens);
+
+	// Performs shunting yard algorithm
 	void shuntingYard(const std::vector<Token>& tokens);
 
 	void initFuncVar(const Configuration& config);

@@ -1,6 +1,6 @@
 #include "Parser.hpp"
 
-const Utils::Map<OperatorType, uint32_t, 10> Parser::s_precedenceMap{
+const Utils::Map<OperatorType, uint32_t, 11> Parser::s_precedenceMap{
 	{OperatorType::ADDITION, 1},
 	{OperatorType::SUBTRACTION, 1},
 	{OperatorType::MULTIPLICATION, 2},
@@ -8,6 +8,7 @@ const Utils::Map<OperatorType, uint32_t, 10> Parser::s_precedenceMap{
 	{OperatorType::MODULUS, 2},
 	{OperatorType::EXPONENTIATION, 3},
 	{OperatorType::SQUAREROOT, 3},
+	{OperatorType::NEGATIVE, 4},
 	{OperatorType::LPARAN, 0},
 	{OperatorType::RPARAN, 0},
 	{OperatorType::COMMA, 0}
@@ -81,6 +82,7 @@ void Parser::initFuncVar(const Configuration& config) {
 		   {OperatorType::MODULUS,			Functions::Operators::Modulo},
 		   {OperatorType::EXPONENTIATION,	Functions::Operators::Exponentiation},
 		   {OperatorType::SQUAREROOT,		Functions::Operators::SquareRoot},
+		   {OperatorType::NEGATIVE,		Functions::Operators::Negative},
 
 		   {"max",		Functions::max},
 		   {"min",		Functions::min},

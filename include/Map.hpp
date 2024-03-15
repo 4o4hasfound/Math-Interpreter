@@ -3,6 +3,7 @@
 #include <initializer_list>
 
 namespace Utils {
+	// If there were duplicate keys, then the first one that occurs from head to tail will be returned
 	template<typename A, typename B, size_t N>
 	class Map {
 		static_assert(!std::is_same<A, B>::value, "A and B must be different types.");

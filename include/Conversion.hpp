@@ -9,6 +9,6 @@ private:
 	~Conversions() = delete;
 
 public:
-	static const Utils::Map<int, OperatorType, 10> CharOperator;
+	static const Utils::Map<int, OperatorType, 11> CharOperator;
 	static const Utils::Map<TokenType, std::string, 5> TokenTypeToString;
 };

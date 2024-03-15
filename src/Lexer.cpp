@@ -29,6 +29,12 @@ void Lexer::GenerateTokens() {
 		if (Conversions::CharOperator.count(c)) {
 			checkCurrentString();
 
+			// Decide wether to use minus token or negative token
+			if (c == '-') {
+				resolveMinusSign();
+				continue;
+			}
+
 			m_tokens.push_back(Conversions::CharOperator[c]);
 		}
 
@@ -43,7 +49,7 @@ void Lexer::GenerateTokens() {
 	checkCurrentString();
 }
 
-bool Lexer::isNumber(std::string str) {
+bool Lexer::isNumber(const std::string& str) {
 	std::string::const_iterator it = str.begin();
 	int decimalPointCount = 0;
 	while (it != str.end()) {
@@ -74,4 +80,25 @@ void Lexer::checkCurrentString() {
 	}
 	m_inString = false;
 	m_lastPtr = m_ptr;
+}
+
+void Lexer::resolveMinusSign() {
+	if (m_ptr + 1 >= m_text.size() || m_text[m_ptr + 1] == ' ') {
+		m_tokens.emplace_back(OperatorType::SUBTRACTION);
+		return;
+	}
+	if (m_ptr == 0) {
+		m_tokens.emplace_back(OperatorType::NEGATIVE);
+		return;
+	}
+
+	// If the last token is a number / an identifier / a lparan
+	// then the token is a subtraction operator
+	if (m_tokens.back().type == TokenType::NUMBER || 
+		(m_tokens.back().type == TokenType::OPERATOR && m_tokens.back().operatorType == OperatorType::RPARAN)) {
+		m_tokens.emplace_back(OperatorType::SUBTRACTION);
+		return;
+	}
+
+	m_tokens.emplace_back(OperatorType::NEGATIVE);
 }

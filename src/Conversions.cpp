@@ -1,6 +1,6 @@
 #include "Conversion.hpp"
 
-const Utils::Map<int, OperatorType, 10> Conversions::CharOperator{ {
+const Utils::Map<int, OperatorType, 11> Conversions::CharOperator{ {
 	{'+', OperatorType::ADDITION},
 	{'-', OperatorType::SUBTRACTION},
 	{'*', OperatorType::MULTIPLICATION},
@@ -10,7 +10,8 @@ const Utils::Map<int, OperatorType, 10> Conversions::CharOperator{ {
 	{'กิ', OperatorType::SQUAREROOT},
 	{'(', OperatorType::LPARAN},
 	{')', OperatorType::RPARAN},
-	{',', OperatorType::COMMA}
+	{',', OperatorType::COMMA},
+	{'-', OperatorType::NEGATIVE}
 } };
 
 const Utils::Map<TokenType, std::string, 5> Conversions::TokenTypeToString{ {
