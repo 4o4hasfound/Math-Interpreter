@@ -52,8 +52,8 @@ private:
 	//	2. How many arguments is a function given
 	void resolveIdentifier(std::vector<Token>& tokens);
 
-	// Insert a multiplication operator whenever an explicit multiplication occurs
-	void explicitMultiplication(std::vector<Token>& tokens);
+	// Insert a multiplication operator whenever an implicit multiplication occurs
+	void implicitMultiplication(std::vector<Token>& tokens);
 
 	// Performs shunting yard algorithm
 	void shuntingYard(const std::vector<Token>& tokens);

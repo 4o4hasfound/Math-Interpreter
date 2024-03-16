@@ -22,7 +22,7 @@ void Parser::Evaluate(std::vector<Token> tokens) {
 	m_output.clear();
 
 	resolveIdentifier(tokens);
-	explicitMultiplication(tokens);
+	implicitMultiplication(tokens);
 	shuntingYard(tokens);
 }
 
@@ -49,14 +49,6 @@ double Parser::Calculate() const {
 						token.str(),
 						func.variableCount - 1 - j,
 						func.variableCount
-					);
-				}
-				if (st.top().type != func.variableType[j]) {
-					throw VariableTypeError(
-						token.str(), 
-						j,
-						Conversions::TokenTypeToString[st.top().type],
-						Conversions::TokenTypeToString[func.variableType[j]]
 					);
 				}
 
@@ -124,18 +116,25 @@ const FunctionObj& Parser::getFunction(const Token& token) const {
 	throw FunctionNotFound(token.str());
 }
 
-void Parser::explicitMultiplication(std::vector<Token>& tokens) {
+void Parser::implicitMultiplication(std::vector<Token>& tokens) {
 	for (size_t i = 0; i < tokens.size(); ++i) {
 		const Token& token = tokens[i];
 
 		if (
 			(token.type == TokenType::IDENTIFIER && token.identifier.type == IdentifierType::FUNCTION) 
-			|| (token.type != TokenType::IDENTIFIER && token.type != TokenType::NUMBER) ) {
+			|| (token.type != TokenType::IDENTIFIER && token.type != TokenType::NUMBER && (
+				token.type == TokenType::OPERATOR && token.operatorType != OperatorType::RPARAN
+				)) ) {
 			continue;
 		}
 
 		if (i == tokens.size() - 1) {
 			break;
+		}
+
+		if (tokens[i + 1].type == TokenType::OPERATOR && tokens[i + 1].operatorType == OperatorType::LPARAN) {
+			tokens.insert(tokens.begin() + (i + 1), Token(OperatorType::MULTIPLICATION));
+			continue;
 		}
 
 		if (tokens[i + 1].type != TokenType::OPERATOR || tokens[i+1].operatorType != OperatorType::LPARAN) {
@@ -150,7 +149,7 @@ void Parser::resolveIdentifier(std::vector<Token>& tokens) {
 	struct IdentifierData {
 		Token& token;
 
-		// Keeps track of the paranthesis count so that it identifies the correct closing paranthesis
+		// Keeps track of the paranthesis count so that it identifies the correct closing paranthesis for the current identifier
 		uint32_t paranthesisStack = 0;
 
 		// To calculate the function argument count later
@@ -168,6 +167,8 @@ void Parser::resolveIdentifier(std::vector<Token>& tokens) {
 		if (t.type != TokenType::IDENTIFIER) {
 			continue;
 		}
+
+		// Token exist at the end of the tokens, must be a variable
 		if (i == tokens.size() - 1) {
 			t.identifier.type = IdentifierType::VARIABLE;
 			break;

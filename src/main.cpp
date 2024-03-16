@@ -116,14 +116,14 @@ void repl() {
 			parser.Evaluate(lexer.getToken());
 			double out = parser.Calculate();
 			if (std::fmod(std::abs(out), 1.0) < std::numeric_limits<double>::epsilon()) {
-				std::cout << static_cast<long long>(out) << "\n>  ";
+				std::cout << static_cast<long long>(out) << "\n\n>  ";
 			}
 			else {
-				std::cout << out << "\n>  ";
+				std::cout << out << "\n\n>  ";
 			}
 		}
 		catch (const std::exception& e) {
-			std::cout << e.what() << "\n>  ";
+			std::cout << e.what() << "\n\n>  ";
 		}
 	}
 }
