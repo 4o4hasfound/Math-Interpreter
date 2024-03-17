@@ -40,7 +40,7 @@ std::cout<<parser.Calculate();
 The parser seperate the Evaluate function and Calculate function because by doing this, you can change variables and functions AFTER the Evaluate and it will effect the result of the Calculate function. This can be achieved if the types of identifier doesn't change. Because the type of the identifiers are set in the Evaluate(variable or function), if you change a variable into a function or a function into a variable after the Evaluate, something will go wrong.
 
 ## Error checking
-This parser checks for tje following errors:
+This parser checks for the following errors:
 * Argument count for functions / operators
 * Mismatched paranthesis
 * Function / Variables not found
