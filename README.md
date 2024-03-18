@@ -25,7 +25,7 @@ Parser parser;
 parser.functionMap["test"] = FunctionObj {
     2, // 'test' function takes 2 arguments
     [](const std::vector<Token>& input) {
-        return input[0].number + input[1].number
+        return input[0].number + input[1].number;
     } // The actuall function thats being called
 };
 
