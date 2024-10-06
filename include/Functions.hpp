@@ -62,6 +62,12 @@ namespace Functions {
 		};
 	};
 
+	const FunctionObj abs{
+		1,
+		[](const std::vector<Token>& input) {
+			return std::fabs(input[0].number);
+		}
+	};
 	const FunctionObj max{
 		2,
 		[](const std::vector<Token>& input) {

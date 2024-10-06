@@ -62,15 +62,13 @@ void parseCommand(const std::string& command) {
 			std::cout << "Usage: /set variable value";
 			return;
 		}
-		int value;
-		try {
-			value = std::stoi(result[2].c_str());
+		std::stringstream expression;
+		for (int i = 2; i < result.size(); ++i) {
+			expression << result[i] << " ";
 		}
-		catch (std::invalid_argument) {
-			std::cout << "Invalid value for variable: " << result[1];
-			return;
-		}
-		parser.variable[result[1]] = value;
+		Lexer lexer(expression.str());
+		parser.Evaluate(lexer.getToken());
+		parser.variable[result[1]] = parser.Calculate();
 	}
 	else if (operation == "clear") {
 		if (result.size() > 1 && parser.variable.count(result[1])) {

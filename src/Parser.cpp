@@ -76,6 +76,7 @@ void Parser::initFuncVar(const Configuration& config) {
 		   {OperatorType::SQUAREROOT,		Functions::Operators::SquareRoot},
 		   {OperatorType::NEGATIVE,		Functions::Operators::Negative},
 
+		   {"abs",		Functions::abs},
 		   {"max",		Functions::max},
 		   {"min",		Functions::min},
 		   {"sqrt",		Functions::sqrt},
