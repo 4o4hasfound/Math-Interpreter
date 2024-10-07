@@ -94,7 +94,8 @@ void Lexer::resolveMinusSign() {
 
 	// If the last token is a number / an identifier / a lparan
 	// then the token is a subtraction operator
-	if (m_tokens.back().type == TokenType::NUMBER || 
+	if (m_tokens.back().type == TokenType::NUMBER ||
+		m_tokens.back().type == TokenType::IDENTIFIER ||
 		(m_tokens.back().type == TokenType::OPERATOR && m_tokens.back().operatorType == OperatorType::RPARAN)) {
 		m_tokens.emplace_back(OperatorType::SUBTRACTION);
 		return;
